@@ -3,16 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midendian</title>
+    <title>Midendian - Software Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background-color: #000000;
-            height: 100vh;
+            box-sizing: border-box;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%23cba6f7" opacity="0.6"/><circle cx="12" cy="12" r="3" fill="%23f5c2e7"/></svg>'), auto;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
+            color: #cdd6f4;
+            background: #1e1e2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="%23f5c2e7" opacity="0.8"/><circle cx="12" cy="12" r="4" fill="%23cba6f7"/></svg>'), pointer;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #cba6f7;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: #bac2de;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #313244;
+            color: #f5c2e7;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: #6c7086;
+            font-size: 0.7rem;
+            border-top: 1px solid #313244;
+        }
+
+        footer a {
+            color: #89b4fa;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: #b4befe;
+        }
+
+        .credits {
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="content">
+            <h1 class="logo">Midendian</h1>
+            <p class="tagline">Software Development</p>
+            <div class="status">Coming Soon</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>2026 Midendian</p>
+        <p class="credits">
+            Theme: <a href="https://catppuccin.com" target="_blank">Catppuccin</a> · 
+            Font: <a href="https://www.jetbrains.com/lp/mono/" target="_blank">JetBrains Mono</a>
+        </p>
+    </footer>
 </body>
 </html>
