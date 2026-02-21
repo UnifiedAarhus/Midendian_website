@@ -128,6 +128,34 @@
             color: #f38ba8;
         }
 
+        .terminal-link {
+            color: #89b4fa;
+            text-decoration: none;
+            border-bottom: 1px dashed #89b4fa;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .terminal-link:hover {
+            color: #b4befe;
+            border-bottom: 1px solid #b4befe;
+        }
+
+        /* Nyt lækkert badge til 2026 launch */
+        .project-badge {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            margin-left: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: rgba(245, 194, 231, 0.1);
+            color: #f5c2e7;
+            border: 1px solid rgba(245, 194, 231, 0.25);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+        }
+
         .launch-screen {
             margin-top: 0.6rem;
             padding: 0.85rem 1rem;
@@ -158,31 +186,6 @@
             50% {
                 opacity: 0.45;
             }
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #cba6f7;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .tagline {
-            font-size: 1rem;
-            color: #bac2de;
-            margin-bottom: 2rem;
-            font-weight: 400;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: #313244;
-            color: #f5c2e7;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 500;
         }
 
         footer {
@@ -269,6 +272,14 @@
             terminalBody.scrollTop = terminalBody.scrollHeight;
         }
 
+        function addHTMLLine(html, className = '') {
+            const line = document.createElement('div');
+            line.className = `line ${className}`.trim();
+            line.innerHTML = html;
+            terminalBody.insertBefore(line, terminalBody.lastElementChild);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
         function addLaunchLine() {
             const wrapper = document.createElement('div');
             wrapper.className = 'line launch-screen';
@@ -291,7 +302,7 @@
             addLine('about           Midendian quick intro', 'output-muted');
             addLine('date            Show current local date/time', 'output-muted');
             addLine('whoami          Display active terminal identity', 'output-muted');
-            addLine('projects        Show current project status', 'output-muted');
+            addLine('projects        Show current projects or redirect', 'output-muted');
             addLine('echo <text>     Print custom text', 'output-muted');
             addLine('clear           Clear terminal output', 'output-muted');
         }
@@ -333,6 +344,21 @@
                     index: -1,
                     apply(value) {
                         terminalInput.value = `contact ${value}`;
+                    }
+                };
+            }
+
+            if (base === 'projects') {
+                const optionPrefix = parts[1] || '';
+                const options = ['unifiedapp'];
+                const matches = options.filter((name) => name.startsWith(optionPrefix));
+                return {
+                    type: 'projects',
+                    source: input,
+                    matches,
+                    index: -1,
+                    apply(value) {
+                        terminalInput.value = `projects ${value}`;
                     }
                 };
             }
@@ -430,9 +456,18 @@
             }
 
             if (base === 'projects') {
+                if (option === 'unifiedapp') {
+                    addLine('Redirecting to unifiedapp.dev...', 'output-title');
+                    setTimeout(() => {
+                        window.open('https://unifiedapp.dev', '_blank');
+                    }, 2000);
+                    return;
+                }
+
                 addLine('Projects:', 'output-title');
-                addLine('- Unified App', 'output-muted');
-                addLine('- 2026 launch', 'output-muted');
+                // Det nye layout for projektet med badge og en terminal-sti
+                addHTMLLine('- <a href="https://unifiedapp.dev" target="_blank" class="terminal-link">Unified App</a> <span class="project-badge">2026 launch</span>', 'output-muted');
+                addHTMLLine('&nbsp;&nbsp;└─ Run command <strong>projects unifiedapp</strong>', 'output-muted');
                 return;
             }
 
