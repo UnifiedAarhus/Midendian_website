@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%23cba6f7" opacity="0.6"/><circle cx="12" cy="12" r="3" fill="%23f5c2e7"/></svg>'), auto;
         }
 
         body {
@@ -25,10 +24,6 @@
             flex-direction: column;
         }
 
-        a, button {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="%23f5c2e7" opacity="0.8"/><circle cx="12" cy="12" r="4" fill="%23cba6f7"/></svg>'), pointer;
-        }
-
         .container {
             flex: 1;
             display: flex;
@@ -37,9 +32,132 @@
             padding: 2rem;
         }
 
-        .content {
+        .terminal {
+            width: min(900px, 100%);
+            background: transparent;
+            border: 1px solid #313244;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #313244;
+            background: transparent;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 0.45rem;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #45475a;
+        }
+
+        .terminal-dot:nth-child(1) {
+            background: #f38ba8;
+        }
+
+        .terminal-dot:nth-child(2) {
+            background: #f9e2af;
+        }
+
+        .terminal-dot:nth-child(3) {
+            background: #a6e3a1;
+        }
+
+        .terminal-title {
+            color: #bac2de;
+            font-size: 0.8rem;
+        }
+
+        .terminal-body {
+            padding: 1rem;
+            min-height: 420px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .line {
+            margin-bottom: 0.55rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .prompt-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .prompt {
+            color: #a6e3a1;
+            user-select: none;
+        }
+
+        .terminal-input {
+            flex: 1;
+            font-family: inherit;
+            font-size: 1rem;
+            color: #cdd6f4;
+            background: transparent;
+            border: none;
+            outline: none;
+            caret-color: #f5c2e7;
+            min-width: 0;
+        }
+
+        .output-title {
+            color: #cba6f7;
+            font-weight: 600;
+        }
+
+        .output-muted {
+            color: #bac2de;
+        }
+
+        .output-error {
+            color: #f38ba8;
+        }
+
+        .launch-screen {
+            margin-top: 0.6rem;
+            padding: 0.85rem 1rem;
+            background: #313244;
+            border-radius: 10px;
+            border: 1px solid #45475a;
+            color: #f5c2e7;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(245, 194, 231, 0.6);
+            letter-spacing: 0.6px;
+        }
+
+        .launch-year {
+            color: #cba6f7;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1ch;
             text-align: center;
-            max-width: 600px;
+            color: #89b4fa;
+            animation: blink 0.9s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.45;
+            }
         }
 
         .logo {
@@ -90,22 +208,32 @@
         }
 
         @media (max-width: 768px) {
-            .logo {
-                font-size: 2rem;
-            }
-
-            .tagline {
-                font-size: 0.9rem;
+            .terminal-body {
+                min-height: 360px;
+                max-height: 65vh;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="content">
-            <h1 class="logo">Midendian</h1>
-            <p class="tagline">Software Development</p>
-            <div class="status">Coming Soon</div>
+        <div class="terminal" aria-label="Midendian terminal">
+            <div class="terminal-header">
+                <div class="terminal-dots" aria-hidden="true">
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+                </div>
+                <div class="terminal-title">midendian@2026:~</div>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="line output-title">Midendian Terminal</div>
+                <div class="line output-muted">Try <strong>help</strong>. Use <strong>Tab</strong> / <strong>Shift+Tab</strong> to cycle suggestions and ↑/↓ for command history.</div>
+                <div class="prompt-line">
+                    <span class="prompt">midendian@2026:~$</span>
+                    <input id="terminalInput" class="terminal-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -116,5 +244,263 @@
             Font: <a href="https://www.jetbrains.com/lp/mono/" target="_blank">JetBrains Mono</a>
         </p>
     </footer>
+
+    <script>
+        const terminalBody = document.getElementById('terminalBody');
+        const terminalInput = document.getElementById('terminalInput');
+        const inputRow = terminalInput.parentElement;
+
+        const contactEmails = {
+            simon: 'simon@unifiedapp.dev',
+            nicolas: 'nicolas@unifiedapp.dev',
+            anton: 'anton@unifiedapp.dev'
+        };
+
+        const commands = ['help', 'contact', 'launch', 'about', 'date', 'whoami', 'projects', 'echo', 'clear'];
+        const commandHistory = [];
+        let historyIndex = -1;
+        let tabState = null;
+
+        function addLine(text, className = '') {
+            const line = document.createElement('div');
+            line.className = `line ${className}`.trim();
+            line.textContent = text;
+            terminalBody.insertBefore(line, terminalBody.lastElementChild);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function addLaunchLine() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'line launch-screen';
+            wrapper.innerHTML = '<span class="spinner">⦿</span> LAUNCHING <span class="launch-year">2026</span>';
+            terminalBody.insertBefore(wrapper, terminalBody.lastElementChild);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function clearOutput() {
+            while (terminalBody.firstChild && terminalBody.firstChild !== inputRow) {
+                terminalBody.removeChild(terminalBody.firstChild);
+            }
+        }
+
+        function showHelp() {
+            addLine('Available commands:', 'output-title');
+            addLine('help            Show this help menu', 'output-muted');
+            addLine('contact <name>  Open email for simon | nicolas | anton', 'output-muted');
+            addLine('launch          Show launching 2026 output', 'output-muted');
+            addLine('about           Midendian quick intro', 'output-muted');
+            addLine('date            Show current local date/time', 'output-muted');
+            addLine('whoami          Display active terminal identity', 'output-muted');
+            addLine('projects        Show current project status', 'output-muted');
+            addLine('echo <text>     Print custom text', 'output-muted');
+            addLine('clear           Clear terminal output', 'output-muted');
+        }
+
+        function resetTabState() {
+            tabState = null;
+        }
+
+        function buildTabState() {
+            const input = terminalInput.value;
+            const normalized = input.trim().toLowerCase();
+            const startsWithWhitespace = /^\s+/.test(input);
+
+            if (!normalized || startsWithWhitespace || !input.includes(' ')) {
+                const prefix = normalized;
+                const matches = commands.filter((cmd) => cmd.startsWith(prefix));
+                return {
+                    type: 'command',
+                    source: input,
+                    matches,
+                    index: -1,
+                    apply(value) {
+                        terminalInput.value = `${value} `;
+                    }
+                };
+            }
+
+            const parts = normalized.split(/\s+/);
+            const base = parts[0];
+
+            if (base === 'contact') {
+                const optionPrefix = parts[1] || '';
+                const options = Object.keys(contactEmails);
+                const matches = options.filter((name) => name.startsWith(optionPrefix));
+                return {
+                    type: 'contact',
+                    source: input,
+                    matches,
+                    index: -1,
+                    apply(value) {
+                        terminalInput.value = `contact ${value}`;
+                    }
+                };
+            }
+
+            return null;
+        }
+
+        function cycleTabCompletion(reverse = false) {
+            if (!tabState) {
+                tabState = buildTabState();
+                if (!tabState) {
+                    return;
+                }
+            }
+
+            if (!tabState.matches.length) {
+                resetTabState();
+                return;
+            }
+
+            const direction = reverse ? -1 : 1;
+            const length = tabState.matches.length;
+            tabState.index = (tabState.index + direction + length) % length;
+            const selected = tabState.matches[tabState.index];
+            tabState.apply(selected);
+        }
+
+        function navigateHistory(direction) {
+            if (!commandHistory.length) {
+                return;
+            }
+
+            historyIndex = Math.min(
+                commandHistory.length,
+                Math.max(-1, historyIndex + direction)
+            );
+
+            if (historyIndex === -1 || historyIndex === commandHistory.length) {
+                terminalInput.value = '';
+                historyIndex = commandHistory.length;
+                return;
+            }
+
+            terminalInput.value = commandHistory[historyIndex];
+        }
+
+        function runCommand(raw) {
+            const command = raw.trim();
+
+            if (!command) {
+                return;
+            }
+
+            if (!commandHistory.length || commandHistory[commandHistory.length - 1] !== command) {
+                commandHistory.push(command);
+            }
+            historyIndex = commandHistory.length;
+
+            addLine(`midendian@2026:~$ ${command}`);
+
+            const [base, option] = command.toLowerCase().split(/\s+/);
+            const args = command.split(/\s+/).slice(1);
+
+            if (base === 'help') {
+                showHelp();
+                return;
+            }
+
+            if (base === 'contact') {
+                if (!option) {
+                    addLine('Options: simon | nicolas | anton', 'output-muted');
+                    return;
+                }
+
+                const email = contactEmails[option];
+                if (!email) {
+                    addLine('Unknown contact. Use: simon | nicolas | anton', 'output-error');
+                    return;
+                }
+
+                addLine(`Redirecting to ${email}...`, 'output-title');
+                window.location.href = `mailto:${email}`;
+                return;
+            }
+
+            if (base === 'launch') {
+                addLaunchLine();
+                return;
+            }
+
+            if (base === 'about') {
+                addLine('Midendian — software development studio.', 'output-title');
+                addLine('Focused on building polished digital experiences.', 'output-muted');
+                return;
+            }
+
+            if (base === 'projects') {
+                addLine('Projects:', 'output-title');
+                addLine('- Unified App', 'output-muted');
+                addLine('- 2026 launch', 'output-muted');
+                return;
+            }
+
+            if (base === 'echo') {
+                addLine(args.length ? args.join(' ') : '', 'output-muted');
+                return;
+            }
+
+            if (base === 'date') {
+                addLine(new Date().toString(), 'output-muted');
+                return;
+            }
+
+            if (base === 'whoami') {
+                addLine('midendian@2026', 'output-title');
+                return;
+            }
+
+            if (base === 'clear') {
+                clearOutput();
+                return;
+            }
+
+            addLine('Unknown command. Type help for available commands.', 'output-error');
+        }
+
+        terminalInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const value = terminalInput.value;
+                terminalInput.value = '';
+                resetTabState();
+                runCommand(value);
+                return;
+            }
+
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                cycleTabCompletion(event.shiftKey);
+                return;
+            }
+
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                resetTabState();
+                if (historyIndex === -1) {
+                    historyIndex = commandHistory.length;
+                }
+                navigateHistory(-1);
+                return;
+            }
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                resetTabState();
+                if (historyIndex === -1) {
+                    historyIndex = commandHistory.length;
+                }
+                navigateHistory(1);
+                return;
+            }
+
+            if (event.key !== 'Shift') {
+                resetTabState();
+            }
+        });
+
+        document.addEventListener('click', () => terminalInput.focus());
+        terminalInput.focus();
+    </script>
 </body>
 </html>
