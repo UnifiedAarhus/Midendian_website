@@ -4,11 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Midendian - Software Development</title>
-    <link rel="icon" type="image/png" href="assets/images/Midendian-black-on-white-logo.png">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logos/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Erode:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Geist';
+            src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -16,10 +38,10 @@
         }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Geist', -apple-system, 'Segoe UI', sans-serif;
             line-height: 1.6;
-            color: #cdd6f4;
-            background: #1e1e2e;
+            color: #F5F0EB;
+            background: #141414;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -36,10 +58,10 @@
         .terminal {
             width: min(900px, 100%);
             background: transparent;
-            border: 1px solid #313244;
+            border: 1px solid #2A2A2A;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(212, 115, 110, 0.06);
         }
 
         .terminal-header {
@@ -47,8 +69,20 @@
             align-items: center;
             justify-content: space-between;
             padding: 0.75rem 1rem;
-            border-bottom: 1px solid #313244;
+            border-bottom: 1px solid #44403C;
             background: transparent;
+            position: relative;
+        }
+
+        .terminal-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #D4736E, #C5A86A, #7DA887);
+            opacity: 0.4;
         }
 
         .terminal-dots {
@@ -60,24 +94,50 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: #45475a;
+            background: #242424;
         }
 
         .terminal-dot:nth-child(1) {
-            background: #f38ba8;
+            background: #D4736E;
         }
 
         .terminal-dot:nth-child(2) {
-            background: #f9e2af;
+            background: #C5A86A;
         }
 
         .terminal-dot:nth-child(3) {
-            background: #a6e3a1;
+            background: #7DA887;
         }
 
         .terminal-title {
-            color: #bac2de;
+            color: #A8A29E;
             font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-logo {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .ascii-line {
+            margin-bottom: 0;
+            line-height: 1.05;
+            white-space: pre;
+            letter-spacing: -0.025em;
+            font-size: 0.85rem;
+        }
+
+        .ascii-light {
+            color: #F5F0EB;
+        }
+
+        .ascii-shadow {
+            color: #78716C;
         }
 
         .terminal-body {
@@ -85,6 +145,7 @@
             min-height: 420px;
             max-height: 70vh;
             overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .line {
@@ -100,86 +161,88 @@
         }
 
         .prompt {
-            color: #a6e3a1;
+            color: #7DA887;
             user-select: none;
         }
 
         .terminal-input {
             flex: 1;
-            font-family: inherit;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 1rem;
-            color: #cdd6f4;
+            color: #F5F0EB;
             background: transparent;
             border: none;
             outline: none;
-            caret-color: #f5c2e7;
+            caret-color: #D4736E;
             min-width: 0;
         }
 
         .output-title {
-            color: #cba6f7;
-            font-weight: 600;
+            color: #D4736E;
+            font-family: 'Erode', Georgia, serif;
+            font-weight: 500;
         }
 
         .output-muted {
-            color: #bac2de;
+            color: #A8A29E;
         }
 
         .output-error {
-            color: #f38ba8;
+            color: #D4736E;
         }
 
         .terminal-link {
-            color: #89b4fa;
+            color: #C5A86A;
             text-decoration: none;
-            border-bottom: 1px dashed #89b4fa;
+            border-bottom: 1px dashed #C5A86A;
             transition: color 0.2s ease, border-color 0.2s ease;
         }
 
         .terminal-link:hover {
-            color: #b4befe;
-            border-bottom: 1px solid #b4befe;
+            color: #D4736E;
+            border-bottom: 1px solid #D4736E;
         }
 
-        /* Nyt lækkert badge til 2026 launch */
         .project-badge {
             display: inline-block;
             padding: 0.15rem 0.4rem;
             margin-left: 0.5rem;
             font-size: 0.65rem;
             font-weight: 600;
-            background: rgba(245, 194, 231, 0.1);
-            color: #f5c2e7;
-            border: 1px solid rgba(245, 194, 231, 0.25);
+            background: rgba(212, 115, 110, 0.15);
+            color: #D4736E;
+            border: 1px solid rgba(212, 115, 110, 0.3);
             border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             vertical-align: middle;
+            font-family: 'Geist', sans-serif;
         }
 
         .launch-screen {
             margin-top: 0.6rem;
             padding: 0.85rem 1rem;
-            background: #313244;
+            background: #242424;
             border-radius: 10px;
-            border: 1px solid #45475a;
-            color: #f5c2e7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #D4736E;
             font-weight: 500;
-            text-shadow: 0 0 8px rgba(245, 194, 231, 0.6);
+            text-shadow: 0 0 12px rgba(212, 115, 110, 0.5);
             letter-spacing: 0.6px;
         }
 
         .launch-year {
-            color: #cba6f7;
+            color: #C5A86A;
+            font-family: 'Erode', Georgia, serif;
             font-size: 1.15rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .spinner {
             display: inline-block;
             width: 1ch;
             text-align: center;
-            color: #89b4fa;
+            color: #C5A86A;
             animation: blink 0.9s steps(1) infinite;
         }
 
@@ -192,19 +255,20 @@
         footer {
             padding: 2rem;
             text-align: center;
-            color: #6c7086;
+            color: rgba(168, 162, 158, 0.6);
             font-size: 0.7rem;
-            border-top: 1px solid #313244;
+            border-top: 1px solid #44403C;
+            font-family: 'Geist', sans-serif;
         }
 
         footer a {
-            color: #89b4fa;
+            color: #C5A86A;
             text-decoration: none;
             transition: color 0.2s ease;
         }
 
         footer a:hover {
-            color: #b4befe;
+            color: #D4736E;
         }
 
         .credits {
@@ -228,11 +292,12 @@
                     <span class="terminal-dot"></span>
                     <span class="terminal-dot"></span>
                 </div>
-                <div class="terminal-title">midendian@2026:~</div>
+                <div class="terminal-title">
+                    <img src="assets/images/logos/midendian-logo-rose.svg" alt="" class="terminal-logo" aria-hidden="true" />
+                    midendian@2026:~
+                </div>
             </div>
             <div class="terminal-body" id="terminalBody">
-                <div class="line output-title">Midendian Terminal</div>
-                <div class="line output-muted">Try <strong>help</strong>. Use <strong>Tab</strong> / <strong>Shift+Tab</strong> to cycle suggestions and ↑/↓ for command history.</div>
                 <div class="prompt-line">
                     <span class="prompt">midendian@2026:~$</span>
                     <input id="terminalInput" class="terminal-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
@@ -244,7 +309,6 @@
     <footer>
         <p>2026 Midendian</p>
         <p class="credits">
-            Theme: <a href="https://catppuccin.com" target="_blank">Catppuccin</a> · 
             Font: <a href="https://www.jetbrains.com/lp/mono/" target="_blank">JetBrains Mono</a>
         </p>
     </footer>
@@ -536,7 +600,67 @@
         });
 
         document.addEventListener('click', () => terminalInput.focus());
-        terminalInput.focus();
+
+        // Half-block text renderer
+        const font = {
+            M: [[1,0,0,0,1],[1,1,0,1,1],[1,0,1,0,1],[1,0,0,0,1],[1,0,0,0,1]],
+            I: [[1,1,1],[0,1,0],[0,1,0],[0,1,0],[1,1,1]],
+            D: [[1,1,1,0],[1,0,0,1],[1,0,0,1],[1,0,0,1],[1,1,1,0]],
+            E: [[1,1,1,1],[1,0,0,0],[1,1,1,0],[1,0,0,0],[1,1,1,1]],
+            N: [[1,0,0,1],[1,1,0,1],[1,0,1,1],[1,0,0,1],[1,0,0,1]],
+            A: [[0,1,1,0],[1,0,0,1],[1,1,1,1],[1,0,0,1],[1,0,0,1]],
+        };
+
+        function renderText(text) {
+            const glyphs = text.split('').map(ch => font[ch]);
+            const rows = [];
+            for (let pr = 0; pr < 5; pr += 2) {
+                let line = '';
+                for (let gi = 0; gi < glyphs.length; gi++) {
+                    if (gi > 0) line += ' ';
+                    const g = glyphs[gi];
+                    for (let c = 0; c < g[0].length; c++) {
+                        const top = g[pr][c];
+                        const bot = pr + 1 < 5 ? g[pr + 1][c] : 0;
+                        if (top && bot) line += '█';
+                        else if (top) line += '▀';
+                        else if (bot) line += '▄';
+                        else line += ' ';
+                    }
+                }
+                rows.push(line);
+            }
+            return rows;
+        }
+
+        // Startup: draw "MIDENDIAN" in terminal art
+        const textArt = renderText('MIDENDIAN');
+
+        function drawStartup() {
+            let i = 0;
+
+            function nextLine() {
+                if (i < textArt.length) {
+                    const line = document.createElement('div');
+                    line.className = 'line ascii-line';
+                    line.innerHTML = `<span class="ascii-light">${textArt[i]}</span>`;
+                    terminalBody.insertBefore(line, terminalBody.lastElementChild);
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                    i++;
+                    setTimeout(nextLine, 60);
+                } else {
+                    addHTMLLine('<span style="color: #A8A29E; font-size: 0.85rem;">Thoughtful software</span>');
+                    addLine('');
+                    addHTMLLine('Type <strong style="color: #F5F0EB;">help</strong> for commands. <strong style="color: #F5F0EB;">Tab</strong> to autocomplete.', 'output-muted');
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                    terminalInput.focus();
+                }
+            }
+
+            setTimeout(nextLine, 200);
+        }
+
+        drawStartup();
     </script>
 </body>
 </html>
