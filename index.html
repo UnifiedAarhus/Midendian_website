@@ -335,7 +335,7 @@
             anton: 'aar@midendian.com'
         };
 
-        const commands = ['help', 'contact', 'launch', 'about', 'date', 'whoami', 'projects', 'echo', 'clear'];
+        const commands = ['help', 'contact', 'launch', 'about', 'date', 'whoami', 'projects', 'echo', 'clear', 'socials'];
         const commandHistory = [];
         let historyIndex = -1;
         let tabState = null;
@@ -381,6 +381,7 @@
             addLine('projects        Show current projects or redirect', 'output-muted');
             addLine('echo <text>     Print custom text', 'output-muted');
             addLine('clear           Clear terminal output', 'output-muted');
+            addLine('socials         Show Midendian social links', 'output-muted');
         }
 
         function resetTabState() {
@@ -564,6 +565,15 @@
 
             if (base === 'clear') {
                 clearOutput();
+                return;
+            }
+
+            if (base === 'socials') {
+                addLine('Socials:', 'output-title');
+                addHTMLLine('- <a href="https://www.linkedin.com/company/midendian" target="_blank" class="terminal-link">LinkedIn</a>', 'output-muted');
+                addHTMLLine('- <a href="https://www.instagram.com/midendiandev/" target="_blank" class="terminal-link">Instagram</a>', 'output-muted');
+                addHTMLLine('- <a href="https://x.com/Midendiandev" target="_blank" class="terminal-link">X</a>', 'output-muted');
+                addHTMLLine('- <a href="https://github.com/midendian-development" target="_blank" class="terminal-link">GitHub</a>', 'output-muted');
                 return;
             }
 
